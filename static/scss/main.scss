@@ -1,0 +1,29 @@
+// Abstracts
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+
+// Base styles
+@import 'base/reset';
+@import 'base/typography';
+@import 'base/utilities';
+
+// Components
+@import 'components/buttons';
+@import 'components/cards';
+@import 'components/forms';
+@import 'components/alerts';
+@import 'components/modal';
+@import 'components/pagination';
+
+// Layout
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/grid';
+@import 'layout/sidebar';
+
+// Pages
+@import 'pages/home';
+@import 'pages/catalog';
+@import 'pages/product';
+@import 'pages/cart';
+@import 'pages/about';

@@ -1,0 +1,344 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ translations.contacts.title }} - Afiyat Energy{% endblock %}
+
+{% block content %}
+<section class="contact-section">
+    <div class="container py-5">
+        <!-- Заголовок страницы -->
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <div class="section-header text-center mb-5">
+                    <h1 class="section-title text-dark mb-3">{{ translations.contacts.page_title }}</h1>
+                    <p class="section-description text-secondary">{{ translations.contacts.subtitle }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Информация о компании и контактная форма -->
+        <div class="row g-4">
+            <!-- Контактная информация -->
+            <div class="col-lg-4">
+                <div class="contact-info">
+                    <h3 class="contact-info-title mb-4">{{ translations.contacts.info_title }}</h3>
+                    
+                    <div class="contact-items">
+                        <div class="contact-item mb-4 text-center">
+                            <div class="contact-text">
+                                <h4>{{ translations.contacts.address_title }}</h4>
+                                <div class="d-flex align-items-center justify-content-center gap-3">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0">{{ translations.contacts.address.street }}</p>
+                                        <p>{{ translations.contacts.address.city }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-item mb-4 text-center">
+                            <div class="contact-text">
+                                <h4>{{ translations.contacts.phone_title }}</h4>
+                                <div class="d-flex align-items-center justify-content-center gap-3">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0"><a href="tel:+998999999999">+998 99 999 99 99</a></p>
+                                        <p><a href="tel:+998999999998">+998 99 999 99 98</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-item mb-4 text-center">
+                            <div class="contact-text">
+                                <h4>{{ translations.contacts.email_title }}</h4>
+                                <div class="d-flex align-items-center justify-content-center gap-3">
+                                    <div class="contact-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0"><a href="mailto:info@afiyat-energy.uz">info@afiyat-energy.uz</a></p>
+                                        <p><a href="mailto:sales@afiyat-energy.uz">sales@afiyat-energy.uz</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-item text-center">
+                            <div class="contact-text">
+                                <h4>{{ translations.contacts.social_title }}</h4>
+                                <div class="social-links mt-3">
+                                    <a href="#" class="social-link facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="social-link telegram">
+                                        <i class="fab fa-telegram"></i>
+                                    </a>
+                                    <a href="#" class="social-link instagram">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Контактная форма -->
+            <div class="col-lg-8">
+                <div class="contact-form">
+                    <h3 class="contact-form-title mb-4">{{ translations.contacts.form.title }}</h3>
+                    
+                    <form id="contactForm" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="{{ translations.contacts.form.name }}" required>
+                                    <label for="name">{{ translations.contacts.form.name }}</label>
+                                    <div class="invalid-feedback">
+                                        {{ translations.contacts.form.name_error }}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="{{ translations.contacts.form.email }}" required>
+                                    <label for="email">{{ translations.contacts.form.email }}</label>
+                                    <div class="invalid-feedback">
+                                        {{ translations.contacts.form.email_error }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="{{ translations.contacts.form.phone }}">
+                                    <label for="phone">{{ translations.contacts.form.phone }}</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="subject" name="subject" placeholder="{{ translations.contacts.form.subject }}" required>
+                                    <label for="subject">{{ translations.contacts.form.subject }}</label>
+                                    <div class="invalid-feedback">
+                                        {{ translations.contacts.form.subject_error }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="message" name="message" placeholder="{{ translations.contacts.form.message }}" style="height: 150px" required></textarea>
+                                    <label for="message">{{ translations.contacts.form.message }}</label>
+                                    <div class="invalid-feedback">
+                                        {{ translations.contacts.form.message_error }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ translations.contacts.form.submit }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карта -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2995.769970140787!2d69.33379431542327!3d41.32845820826751!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38aef4d376395555%3A0x2f977e6f5e2a2571!2z0YPQuy4g0JzQuNGA0LfQvi3Qo9C70YPQs9Cx0LXQutCwLCDQotCw0YjQutC10L3Rgiwg0KPQt9Cx0LXQutC40YHRgtCw0L0!5e0!3m2!1sru!2s!4v1620000000000!5m2!1sru!2s" 
+                        width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-section {
+        background-color: var(--bg-primary);
+    }
+
+    .contact-info {
+        background: #fff;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+        height: 100%;
+    }
+
+    .contact-form {
+        background: #fff;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .contact-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.2rem;
+    }
+
+    .contact-text h4 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
+
+    .contact-text p {
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-text a {
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .contact-text a:hover {
+        color: var(--primary-color);
+    }
+
+    .social-links {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.2rem;
+        transition: transform 0.3s;
+    }
+
+    .social-link:hover {
+        transform: translateY(-3px);
+    }
+
+    .social-link.facebook {
+        background: #1877f2;
+    }
+
+    .social-link.telegram {
+        background: #0088cc;
+    }
+
+    .social-link.instagram {
+        background: #e4405f;
+    }
+
+    .form-floating > .form-control,
+    .form-floating > .form-control-plaintext {
+        padding: 1rem 0.75rem;
+    }
+
+    .form-floating > .form-control:focus,
+    .form-floating > .form-control:not(:placeholder-shown) {
+        padding-top: 1.625rem;
+        padding-bottom: 0.625rem;
+    }
+
+    .form-floating > .form-control:-webkit-autofill {
+        padding-top: 1.625rem;
+        padding-bottom: 0.625rem;
+    }
+
+    .form-floating > .form-select {
+        padding-top: 1.625rem;
+        padding-bottom: 0.625rem;
+    }
+
+    .form-floating > label {
+        padding: 1rem 0.75rem;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        padding: 0.8rem 2rem;
+        font-weight: 500;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--primary-color-dark);
+        border-color: var(--primary-color-dark);
+    }
+
+    .map-container {
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        if (!form.checkValidity()) {
+            event.stopPropagation();
+            form.classList.add('was-validated');
+            return;
+        }
+        
+        // Здесь будет отправка формы
+        const formData = new FormData(form);
+        
+        fetch('/api/contact/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Показать сообщение об успехе
+                alert('{{ translations.contacts.form.success_message }}');
+                form.reset();
+                form.classList.remove('was-validated');
+            } else {
+                // Показать сообщение об ошибке
+                alert('{{ translations.contacts.form.error_message }}');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{{ translations.contacts.form.error_message }}');
+        });
+    });
+});
+</script>
+{% endblock %}

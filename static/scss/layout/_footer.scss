@@ -1,0 +1,119 @@
+.footer {
+  background-color: $gray-900;
+  color: $white;
+  padding: $spacer * 4 0;
+  margin-top: $spacer * 4;
+  
+  &-content {
+    @include grid(4, $spacer * 2);
+    
+    @include respond-to(md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @include respond-to(sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  &-logo {
+    img {
+      height: 40px;
+      margin-bottom: $spacer;
+    }
+    
+    p {
+      color: $gray-400;
+      margin-bottom: $spacer * 2;
+    }
+  }
+  
+  &-section {
+    h4 {
+      @include text-style(1.25rem, 600);
+      margin-bottom: $spacer * 1.5;
+      color: $white;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      
+      li {
+        margin-bottom: $spacer;
+        
+        a {
+          color: $gray-400;
+          text-decoration: none;
+          @include transition;
+          
+          &:hover {
+            color: $white;
+          }
+        }
+      }
+    }
+    
+    &.contacts {
+      .contact-item {
+        @include flex(row, flex-start, flex-start);
+        gap: $spacer;
+        margin-bottom: $spacer;
+        
+        i {
+          color: $primary-color;
+          font-size: 1.25rem;
+        }
+        
+        .contact-info {
+          h5 {
+            @include text-style(1rem, 600);
+            margin-bottom: $spacer * .25;
+            color: $white;
+          }
+          
+          p {
+            color: $gray-400;
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+  
+  &-bottom {
+    margin-top: $spacer * 3;
+    padding-top: $spacer * 2;
+    border-top: 1px solid rgba($white, 0.1);
+    
+    &-content {
+      @include flex(row, space-between, center);
+      
+      @include respond-to(sm) {
+        flex-direction: column;
+        gap: $spacer;
+        text-align: center;
+      }
+      
+      .copyright {
+        color: $gray-500;
+      }
+      
+      .social-links {
+        @include flex(row, flex-end, center);
+        gap: $spacer;
+        
+        a {
+          color: $gray-400;
+          font-size: 1.25rem;
+          @include transition;
+          
+          &:hover {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+}

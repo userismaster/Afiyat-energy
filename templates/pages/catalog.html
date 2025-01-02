@@ -1,0 +1,371 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ translations.catalog.title }} - Afiyat Energy{% endblock %}
+
+{% block content %}
+<div class="catalog-page">
+    <!-- Hero Section -->
+    <div class="catalog-hero">
+        <div class="container text-center">
+            <h1>{{ translations.catalog.title }}</h1>
+            <p>{{ translations.catalog.description }}</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Фильтры -->
+            <div class="col-lg-3">
+                <div class="filters-section">
+                    <form method="get" class="filters-form">
+                        <!-- Категории -->
+                        <div class="filter-group">
+                            <h3 class="filter-title">{{ translations.catalog.filters.categories }}</h3>
+                            {% for category in categories %}
+                            <div class="form-check">
+                                <input type="checkbox" 
+                                       class="form-check-input" 
+                                       name="category" 
+                                       value="{{ category.id }}"
+                                       id="category{{ category.id }}"
+                                       {% if category.id|stringformat:"i" in selected_categories %}checked{% endif %}>
+                                <label class="form-check-label" for="category{{ category.id }}">
+                                    {{ category.get_name }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Цена -->
+                        <div class="filter-group">
+                            <h3 class="filter-title">{{ translations.catalog.filters.price }}</h3>
+                            <div class="price-range">
+                                <input type="number" name="min_price" class="form-control" 
+                                       placeholder="{{ translations.catalog.filters.min_price }}"
+                                       value="{{ selected_min_price }}">
+                                <input type="number" name="max_price" class="form-control" 
+                                       placeholder="{{ translations.catalog.filters.max_price }}"
+                                       value="{{ selected_max_price }}">
+                            </div>
+                        </div>
+
+                        <!-- Наличие -->
+                        <div class="filter-group">
+                            <div class="form-check">
+                                <input type="checkbox" 
+                                       class="form-check-input" 
+                                       name="in_stock"
+                                       value="true"
+                                       id="inStock"
+                                       {% if in_stock %}checked{% endif %}>
+                                <label class="form-check-label" for="inStock">
+                                    {{ translations.catalog.filters.in_stock }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Сортировка -->
+                        <div class="filter-group">
+                            <h3 class="filter-title">{{ translations.catalog.filters.sort.label }}</h3>
+                            <select class="form-select" name="sort">
+                                <option value="popular" {% if sort == 'popular' %}selected{% endif %}>
+                                    {{ translations.catalog.filters.sort.popular }}
+                                </option>
+                                <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>
+                                    {{ translations.catalog.filters.sort.price_asc }}
+                                </option>
+                                <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>
+                                    {{ translations.catalog.filters.sort.price_desc }}
+                                </option>
+                                <option value="new" {% if sort == 'new' %}selected{% endif %}>
+                                    {{ translations.catalog.filters.sort.new }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="filter-actions">
+                            <button type="submit" class="btn btn-primary">{{ translations.catalog.filters.apply }}</button>
+                            <a href="{% url 'catalog:product_list' %}" class="btn btn-outline-secondary">
+                                {{ translations.catalog.filters.reset }}
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Товары -->
+            <div class="col-lg-9">
+                <div class="products-section">
+                    {% if products %}
+                    <div class="products-count mb-4">
+                        {{ products.paginator.count }} {{ translations.catalog.products.found }}
+                    </div>
+
+                    <div class="row g-4">
+                        {% for product in products %}
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="product-card">
+                                <div class="product-image">
+                                    {% if product.image %}
+                                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                    {% else %}
+                                        <div class="no-image">
+                                            <i class="fas fa-image"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title">
+                                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                                    </h3>
+                                    <div class="product-price">
+                                        {% if product.price %}
+                                            <span class="price">{{ translations.catalog.products.from }} {{ product.price }} UZS</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-actions">
+                                        {% if product.stock > 0 %}
+                                            <button class="btn btn-primary add-to-cart" 
+                                                    data-product-id="{{ product.id }}">
+                                                {{ translations.catalog.products.add_to_cart }}
+                                            </button>
+                                        {% else %}
+                                            <button class="btn btn-secondary" disabled>
+                                                {{ translations.catalog.products.out_of_stock }}
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if products.paginator.num_pages > 1 %}
+                    <nav class="pagination-container mt-4">
+                        <ul class="pagination justify-content-center">
+                            {% if products.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ products.previous_page_number }}{{ query_params }}">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% for num in products.paginator.page_range %}
+                                {% if num == products.number %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}{{ query_params }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if products.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ products.next_page_number }}{{ query_params }}">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
+
+                    {% else %}
+                    <div class="no-products text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h3>{{ translations.catalog.products.no_results }}</h3>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .catalog-page {
+        padding: 2rem 0;
+        background-color: #f8f9fa;
+    }
+
+    .catalog-hero {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        color: #fff;
+        text-align: center;
+    }
+
+    .catalog-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .catalog-hero p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .filters-section {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 2rem;
+    }
+
+    .filter-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-dark);
+    }
+
+    .filter-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .price-range {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .product-card {
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: transform 0.3s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .product-image {
+        position: relative;
+        padding-top: 75%;
+        overflow: hidden;
+    }
+
+    .product-image img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .no-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #adb5bd;
+        font-size: 2rem;
+    }
+
+    .product-info {
+        padding: 1.5rem;
+    }
+
+    .product-title {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .product-title a {
+        color: var(--text-dark);
+        text-decoration: none;
+    }
+
+    .product-price {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .product-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .pagination-container {
+        margin-top: 2rem;
+    }
+
+    .no-products {
+        background: #fff;
+        border-radius: 10px;
+        padding: 3rem;
+    }
+
+    @media (max-width: 991.98px) {
+        .filters-section {
+            margin-bottom: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Обработчик добавления в корзину
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const productId = this.dataset.productId;
+                
+                fetch('/cart/add/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: 1
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Обновляем количество товаров в корзине
+                        const cartCounter = document.querySelector('.cart-counter');
+                        if (cartCounter) {
+                            cartCounter.textContent = data.cart_quantity;
+                        }
+                        
+                        // Показываем уведомление
+                        alert('{{ translations.catalog.products.add_success }}');
+                    } else {
+                        throw new Error(data.error || '{{ translations.catalog.products.add_error }}');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(error.message);
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

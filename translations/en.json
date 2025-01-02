@@ -1,0 +1,295 @@
+{
+    "nav": {
+        "home": "Home",
+        "about": "About",
+        "catalog": "Catalog",
+        "contacts": "Contacts",
+        "blog": "Blog"
+    },
+    "about": {
+        "title": "About Afiyat Energy",
+        "description": "Leading supplier of oil products and fertilizers in Uzbekistan with years of experience",
+        "history_title": "Our History",
+        "history_text": "Afiyat Energy was founded in the Mirzo-Ulugbek district of Tashkent and has been successfully operating in the oil products and fertilizers market for over 20 years.",
+        "history_text_additional": "During this time, we have earned a reputation as a reliable partner who always fulfills their obligations and provides products of the highest quality.",
+        "values_title": "Our Values",
+        "values_quality": "Quality",
+        "values_quality_description": "We guarantee the highest quality of all our products",
+        "values_reliability": "Reliability",
+        "values_reliability_description": "We always fulfill our obligations on time",
+        "values_clients": "Clients",
+        "values_clients_description": "Individual approach to each client",
+        "values_innovation": "Innovation",
+        "values_innovation_description": "Continuous development and implementation of new technologies",
+        "mission_title": "Our Mission",
+        "mission_text": "Our mission is to provide clients with quality oil products and fertilizers, contributing to the development of their business and agriculture in Uzbekistan",
+        "team_title": "Our Team",
+        "team_ceo": "Alisher Rakhimov",
+        "team_ceo_position": "Chief Executive Officer",
+        "team_sales": "Dilshod Karimov",
+        "team_sales_position": "Sales Director",
+        "team_tech": "Bakhtiyor Usmanov",
+        "team_tech_position": "Technical Director",
+        "team_quality": "Nodira Azizova",
+        "team_quality_position": "Quality Manager",
+        "years_market": "years in market",
+        "happy_clients": "happy clients",
+        "employees": "employees",
+        "quality_guarantee": "quality guarantee"
+    },
+    "catalog": {
+        "meta": {
+          "title": "Product Catalog - Afiyat Energy"
+        },
+        "title": "Our Products",
+        "description": "Browse our wide selection of products",
+        "filters": {
+          "title": "Filters",
+          "categories": "Categories",
+          "price": "Price",
+          "price_range": "Price Range",
+          "min_price": "Min Price",
+          "max_price": "Max Price",
+          "availability": "Availability",
+          "in_stock": "In Stock",
+          "apply": "Apply Filters",
+          "reset": "Reset Filters",
+          "sort": {
+            "label": "Sort by",
+            "popular": "Most Popular",
+            "price_asc": "Price: Low to High",
+            "price_desc": "Price: High to Low",
+            "new": "Newest First"
+          }
+        },
+        "products": {
+          "found": "products found",
+          "no_results": "No products found",
+          "from": "From",
+          "add_to_cart": "Add to Cart",
+          "out_of_stock": "Out of Stock"
+        },
+        "pagination": {
+          "previous": "Previous",
+          "next": "Next"
+        },
+        "sorting": {
+          "showing": "Showing",
+          "products": "products",
+          "by_name": "By Name",
+          "by_price_asc": "By Price (Low to High)",
+          "by_price_desc": "By Price (High to Low)"
+        },
+        "product": {
+          "price": "{price} UZS",
+          "add_to_cart": "Add to Cart",
+          "out_of_stock": "Out of Stock"
+        },
+        "no_products": "No products found matching your criteria",
+        "categories": {
+            "fertilizers": {
+                "title": "Fertilizers",
+                "description": "Wide range of high-quality fertilizers for various crops",
+                "subcategories": {
+                    "macro": {
+                        "title": "Macronutrient Fertilizers (NPK and S)",
+                        "description": "Fertilizers containing essential nutrients: nitrogen, phosphorus, potassium, and sulfur"
+                    },
+                    "complex": {
+                        "title": "Complex Mineral Fertilizers",
+                        "description": "Balanced complex fertilizers for various soil types and crops"
+                    },
+                    "water": {
+                        "title": "Water-Soluble Fertilizers",
+                        "description": "Fully soluble fertilizers for drip irrigation and foliar feeding"
+                    },
+                    "special": {
+                        "title": "Special Fertilizers",
+                        "description": "Specialized fertilizers for specific plant needs"
+                    }
+                }
+            }
+        }
+    },
+    "product": {
+        "specifications": "Specifications",
+        "additional_specifications": "Additional Specifications",
+        "in_stock": "In Stock",
+        "out_of_stock": "Out of Stock",
+        "add_to_cart": "Add to Cart"
+    },
+    "blog": {
+        "title": "Our Blog",
+        "subtitle": "Latest news and articles about our company and the energy industry",
+        "categories": "Categories",
+        "latest_posts": "Latest Posts",
+        "read_more": "Read More",
+        "author": "Author",
+        "date": "Date"
+    },
+    "contacts": {
+        "title": "Contact Us",
+        "description": "Get in touch with us in any convenient way",
+        "address_title": "Our Address",
+        "address": "4B Afrosiab Street, Mirabad District, Tashkent",
+        "phone_title": "Phone",
+        "phone": "+998 71 200 00 00",
+        "email_title": "Email",
+        "email": "info@afiyat-energy.uz",
+        "form_title": "Send Message",
+        "form_name": "Your Name",
+        "form_email": "Email",
+        "form_phone": "Phone",
+        "form_subject": "Subject",
+        "form_message": "Message",
+        "form_submit": "Send",
+        "success_message": "Your message has been sent successfully! We will contact you soon.",
+        "error_message": "An error occurred while sending the message. Please try again.",
+        "required_fields": "Please fill in all required fields."
+    },
+    "home": {
+        "meta": {
+          "title": "Afiyat Energy - Energy Equipment"
+        },
+        "hero": {
+            "title_start": "Modern solutions for",
+            "title_highlight": "energy",
+            "title_end": "future",
+            "description": "We offer a wide range of quality energy equipment for your business",
+            "cta": "View catalog"
+        },
+        "popular_products": {
+            "title": "Popular Products",
+            "description": "Check out our most popular products that are in high demand among our customers",
+            "view_all": "View All Products"
+        },
+        "categories": {
+            "title": "Product Categories",
+            "description": "Choose a category to view products",
+            "products_count": "{count} products"
+        },
+        "products": {
+            "title": "Popular Products",
+            "price": "{price} sum",
+            "add_to_cart": "Add to Cart"
+        },
+        "about": {
+            "title": "About Afiyat Energy",
+            "subtitle": "Your Reliable Partner in Oil Products and Fertilizers",
+            "description": "We specialize in supplying high-quality oil products and fertilizers for industrial enterprises and agriculture.",
+            "features": {
+                "quality": {
+                    "title": "Quality",
+                    "description": "Only certified products from leading manufacturers"
+                },
+                "delivery": {
+                    "title": "Delivery",
+                    "description": "Fast delivery throughout Uzbekistan and CIS countries"
+                },
+                "support": {
+                    "title": "Support",
+                    "description": "Professional consultation and technical support"
+                },
+                "warranty": {
+                    "title": "Warranty",
+                    "description": "Warranty and post-warranty service"
+                }
+            },
+            "stats": {
+                "experience": {
+                    "number": "10+",
+                    "label": "Years of Experience"
+                },
+                "clients": {
+                    "number": "1000+",
+                    "label": "Clients"
+                },
+                "projects": {
+                    "number": "500+",
+                    "label": "Projects"
+                }
+            },
+            "buttons": {
+                "more": "Learn More About Us",
+                "contact": "Contact Us"
+            },
+            "badge": {
+                "years": "years",
+                "experience": "experience"
+            }
+        }
+    },
+    "cart": {
+        "title": "Cart",
+        "subtitle": "Your Items",
+        "empty": {
+            "title": "Your cart is empty",
+            "message": "Add items to cart to place an order",
+            "button": "Go to catalog"
+        },
+        "product": {
+            "price": "Price",
+            "quantity": "Quantity",
+            "total": "Total",
+            "remove": "Remove",
+            "increase": "Increase quantity",
+            "decrease": "Decrease quantity"
+        },
+        "subtotal": "Subtotal",
+        "total": "Total",
+        "checkout": "Checkout",
+        "continue_shopping": "Continue shopping",
+        "update_error": "Error updating cart",
+        "remove_error": "Error removing item",
+        "confirm_remove": "Are you sure you want to remove this item from cart?"
+    },
+    "checkout": {
+        "title": "Checkout",
+        "contact_info": "Contact Information",
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Delivery Address",
+        "comment": "Order Comment",
+        "order_summary": "Order Summary",
+        "submit": "Place Order",
+        "required_fields": "Please fill in all required fields",
+        "error": "Error creating order"
+    },
+    "order": {
+        "success_title": "Thank you for your order!",
+        "success_message": "Your order has been successfully placed. We will contact you shortly.",
+        "order_number": "Order Number",
+        "back_to_home": "Back to Home"
+    },
+    "footer": {
+        "about": {
+            "title": "About Company",
+            "description": "Afiyat Energy is a leading supplier of oil products and fertilizers in Uzbekistan. We offer a wide range of solutions for industry and private sector."
+        },
+        "navigation": {
+            "title": "Navigation",
+            "about": "About Us",
+            "catalog": "Catalog",
+            "blog": "Blog",
+            "contacts": "Contacts"
+        },
+        "contacts": {
+            "title": "Contacts",
+            "address": "100 Mirzo-Ulugbek St., Tashkent",
+            "phone": "+998 99 999 99 99",
+            "email": "info@afiyat-energy.uz"
+        },
+        "social": {
+            "facebook": "Find us on Facebook",
+            "telegram": "Join us on Telegram",
+            "instagram": "Follow us on Instagram"
+        },
+        "copyright": {
+            "rights": "All rights reserved.",
+            "developed": "Developed with",
+            "team": "by Afiyat Energy team"
+        }
+    }
+}

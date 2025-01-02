@@ -1,0 +1,36 @@
+# Python
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+static_root/
+media_root/
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Compiled files
+*.sass-cache/
+*.scss.map
+*.css.map
+
+# Other
+.DS_Store
+Thumbs.db

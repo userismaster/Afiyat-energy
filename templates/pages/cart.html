@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ translations.cart.title }} - Afiyat Energy{% endblock %}
+
+{% block content %}
+<div class="cart-page py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Заголовок -->
+                <div class="cart-header mb-4">
+                    <h1 class="text-center mb-2">{{ translations.cart.title }}</h1>
+                    <p class="text-center text-muted">{{ translations.cart.subtitle }}</p>
+                </div>
+
+                {% if cart_items|length > 0 %}
+                <!-- Список товаров -->
+                <div class="cart-items mb-4">
+                    {% for item in cart_items %}
+                    <div class="cart-item mb-3 p-3 bg-white rounded shadow-sm" data-product-id="{{ item.product.id }}">
+                        <div class="row align-items-center">
+                            <!-- Изображение товара -->
+                            <div class="col-md-2">
+                                <div class="cart-item-image">
+                                    {% if item.product.image %}
+                                        <img src="/media/{{ item.product.image }}" alt="{{ item.product.name }}" class="img-fluid">
+                                    {% else %}
+                                        <div class="no-image">
+                                            <i class="fas fa-image"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- Информация о товаре -->
+                            <div class="col-md-4">
+                                <h5 class="cart-item-title mb-2">
+                                    <a href="{{ item.product.get_absolute_url }}" class="text-decoration-none">{{ item.product.name }}</a>
+                                </h5>
+                                <div class="cart-item-price">
+                                    <span class="price-label text-muted">{{ translations.cart.product.price }}:</span>
+                                    <span class="price">{{ item.product.price }} UZS</span>
+                                </div>
+                            </div>
+                            <!-- Количество -->
+                            <div class="col-md-3">
+                                <div class="quantity-label text-muted mb-2">{{ translations.cart.product.quantity }}:</div>
+                                <div class="quantity-control d-flex align-items-center">
+                                    <button class="btn btn-outline-secondary btn-sm btn-quantity decrease" 
+                                            data-product-id="{{ item.product.id }}" 
+                                            title="{{ translations.cart.product.decrease }}">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" 
+                                           class="form-control form-control-sm mx-2 text-center quantity-input" 
+                                           value="{{ item.quantity }}" 
+                                           min="1" 
+                                           max="99" 
+                                           style="width: 60px;"
+                                           data-product-id="{{ item.product.id }}">
+                                    <button class="btn btn-outline-secondary btn-sm btn-quantity increase" 
+                                            data-product-id="{{ item.product.id }}" 
+                                            title="{{ translations.cart.product.increase }}">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Итоговая цена и удаление -->
+                            <div class="col-md-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="total-label text-muted">{{ translations.cart.product.total }}:</div>
+                                        <span class="total-price fw-bold">{{ item.get_total_price }} UZS</span>
+                                    </div>
+                                    <button class="btn btn-outline-danger btn-sm btn-remove" 
+                                            data-product-id="{{ item.product.id }}" 
+                                            title="{{ translations.cart.product.remove }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Итого -->
+                <div class="cart-summary">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-6">
+                            <div class="cart-total p-4 bg-light rounded shadow-sm">
+                                <h4 class="mb-3">{{ translations.cart.total }}</h4>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span class="text-muted">{{ translations.cart.subtotal }}:</span>
+                                    <span class="fw-bold">{{ cart_total }} UZS</span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between mb-4">
+                                    <strong>{{ translations.cart.total }}:</strong>
+                                    <strong class="fs-5">{{ cart_total }} UZS</strong>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <a href="{% url 'catalog:checkout' %}" class="btn btn-primary">
+                                        {{ translations.cart.checkout }}
+                                    </a>
+                                    <a href="{% url 'catalog:product_list' %}" class="btn btn-outline-secondary">
+                                        {{ translations.cart.continue_shopping }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <!-- Пустая корзина -->
+                <div class="empty-cart text-center py-5">
+                    <div class="empty-cart-icon mb-4">
+                        <i class="fas fa-shopping-cart fa-4x text-muted"></i>
+                    </div>
+                    <h2 class="mb-3">{{ translations.cart.empty.title|default:"Ваша корзина пуста" }}</h2>
+                    <p class="text-muted mb-4">{{ translations.cart.empty.message|default:"Добавьте товары в корзину, чтобы оформить заказ" }}</p>
+                    <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">
+                        {{ translations.cart.empty.button|default:"Перейти в каталог" }}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateCartUI(cartItem, quantity, cartTotal) {
+    // Обновляем количество
+    const quantityInput = cartItem.querySelector('.quantity-input');
+    quantityInput.value = quantity;
+    
+    // Обновляем общую стоимость товара
+    const priceText = cartItem.querySelector('.price').textContent;
+    const price = parseFloat(priceText.replace(/[^\d.]/g, ''));
+    const totalPrice = price * quantity;
+    cartItem.querySelector('.total-price').textContent = totalPrice.toFixed(0) + ' UZS';
+    
+    // Обновляем общую стоимость корзины
+    document.querySelectorAll('.cart-total strong:last-child').forEach(el => {
+        el.textContent = cartTotal + ' UZS';
+    });
+}
+
+function updateQuantity(productId, quantity) {
+    const cartItem = document.querySelector(`.cart-item[data-product-id="${productId}"]`);
+    
+    fetch('/cart/update/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+            'product_id': productId,
+            'quantity': quantity
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateCartUI(cartItem, quantity, data.cart_total);
+            // Обновляем счетчик товаров в шапке
+            const cartCounter = document.querySelector('.cart-count');
+            if (cartCounter) {
+                cartCounter.textContent = data.cart_count;
+            }
+        } else {
+            alert(data.error || '{{ translations.cart.update_error }}');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('{{ translations.cart.update_error }}');
+    });
+}
+
+function removeFromCart(productId) {
+    if (confirm('{{ translations.cart.confirm_remove }}')) {
+        const cartItem = document.querySelector(`.cart-item[data-product-id="${productId}"]`);
+        
+        fetch('/cart/remove/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                'product_id': productId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                cartItem.remove();
+                // Обновляем общую стоимость корзины
+                document.querySelectorAll('.cart-total strong:last-child').forEach(el => {
+                    el.textContent = data.cart_total + ' UZS';
+                });
+                // Обновляем счетчик товаров в шапке
+                const cartCounter = document.querySelector('.cart-count');
+                if (cartCounter) {
+                    cartCounter.textContent = data.cart_count;
+                }
+                // Если корзина пуста, показываем сообщение
+                if (document.querySelectorAll('.cart-item').length === 0) {
+                    location.reload();
+                }
+            } else {
+                alert(data.error || '{{ translations.cart.remove_error }}');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{{ translations.cart.remove_error }}');
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Уменьшение количества
+    document.querySelectorAll('.decrease').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.dataset.productId;
+            const input = document.querySelector(`.quantity-input[data-product-id="${productId}"]`);
+            let quantity = parseInt(input.value);
+            if (quantity > 1) {
+                quantity--;
+                updateQuantity(productId, quantity);
+            }
+        });
+    });
+
+    // Увеличение количества
+    document.querySelectorAll('.increase').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.dataset.productId;
+            const input = document.querySelector(`.quantity-input[data-product-id="${productId}"]`);
+            let quantity = parseInt(input.value);
+            if (quantity < 99) {
+                quantity++;
+                updateQuantity(productId, quantity);
+            }
+        });
+    });
+
+    // Изменение количества через ввод
+    document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('change', function() {
+            const productId = this.dataset.productId;
+            let quantity = parseInt(this.value);
+            if (quantity < 1) quantity = 1;
+            if (quantity > 99) quantity = 99;
+            updateQuantity(productId, quantity);
+        });
+    });
+
+    // Удаление товара
+    document.querySelectorAll('.btn-remove').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.dataset.productId;
+            removeFromCart(productId);
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .cart-page {
+        padding: 4rem 0;
+        background-color: #f8f9fa;
+    }
+
+    .cart-header {
+        margin-bottom: 2rem;
+    }
+
+    .cart-item {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        margin-bottom: 1rem;
+    }
+
+    .cart-item-image {
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .cart-item-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+    }
+
+    .no-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #adb5bd;
+    }
+
+    .cart-item-title {
+        margin: 0 0 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .cart-item-title a {
+        color: #2c3e50;
+        text-decoration: none;
+    }
+
+    .cart-item-title a:hover {
+        color: var(--primary-color);
+    }
+
+    .cart-item-price {
+        color: #6c757d;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-quantity {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        color: #495057;
+    }
+
+    .btn-quantity:hover {
+        background: #e9ecef;
+    }
+
+    .quantity-input {
+        width: 60px;
+        text-align: center;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 0.375rem;
+    }
+
+    .btn-remove {
+        color: #dc3545;
+        background: none;
+        border: none;
+        padding: 0.5rem;
+    }
+
+    .btn-remove:hover {
+        color: #c82333;
+    }
+
+    .cart-summary {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .cart-total {
+        font-size: 1.1rem;
+    }
+
+    .empty-cart {
+        background: #fff;
+        padding: 3rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .empty-cart-icon {
+        color: #adb5bd;
+    }
+
+    @media (max-width: 768px) {
+        .cart-item {
+            padding: 1rem;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+        }
+
+        .quantity-control {
+            margin: 1rem 0;
+        }
+    }
+</style>
+{% endblock %}

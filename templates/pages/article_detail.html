@@ -1,0 +1,336 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ article.title }} - Afiyat Energy{% endblock %}
+
+{% block content %}
+<section class="article-section py-5">
+    <div class="container">
+        <!-- Заголовок статьи -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'catalog:blog' %}">Блог</a></li>
+                        {% if article.category %}
+                        <li class="breadcrumb-item"><a href="{% url 'catalog:blog' %}?category={{ article.category.slug }}">{{ article.category.name }}</a></li>
+                        {% endif %}
+                        <li class="breadcrumb-item active" aria-current="page">{{ article.title }}</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-12">
+                <h1 class="article-title">{{ article.title }}</h1>
+                <div class="article-meta">
+                    <span class="meta-item">
+                        <i class="fas fa-user"></i>
+                        {{ article.author.get_full_name|default:article.author.username }}
+                    </span>
+                    <span class="meta-item">
+                        <i class="fas fa-calendar"></i>
+                        {{ article.created_at|date:"d.m.Y" }}
+                    </span>
+                    {% if article.category %}
+                    <span class="meta-item">
+                        <i class="fas fa-folder"></i>
+                        {{ article.category.name }}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Изображение статьи -->
+                {% if article.image %}
+                <div class="article-image mb-4">
+                    <img src="{{ article.image.url }}" alt="{{ article.title }}" class="img-fluid">
+                </div>
+                {% endif %}
+
+                <!-- Содержание статьи -->
+                <div class="article-content">
+                    {{ article.content|safe }}
+                </div>
+
+                <!-- Теги -->
+                {% if article.tags.exists %}
+                <div class="article-tags mt-4">
+                    {% for tag in article.tags.all %}
+                    <a href="{% url 'catalog:blog' %}?tag={{ tag.slug }}" class="tag">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Поделиться -->
+                <div class="share-buttons mt-5">
+                    <h4 class="mb-3">Поделиться статьей</h4>
+                    <div class="d-flex gap-2">
+                        <a href="https://telegram.me/share/url?url={{ request.build_absolute_uri }}&text={{ article.title }}" 
+                           class="share-button telegram" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                           class="share-button facebook" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ article.title }}" 
+                           class="share-button twitter" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Похожие статьи -->
+                {% if related_articles %}
+                <div class="sidebar-widget">
+                    <h4 class="widget-title">Похожие статьи</h4>
+                    {% for related in related_articles %}
+                    <div class="related-article">
+                        {% if related.image %}
+                        <div class="related-image">
+                            <img src="{{ related.image.url }}" alt="{{ related.title }}">
+                        </div>
+                        {% endif %}
+                        <div class="related-content">
+                            <h5><a href="{% url 'catalog:article_detail' related.slug %}">{{ related.title }}</a></h5>
+                            <div class="related-meta">
+                                <span><i class="fas fa-calendar"></i> {{ related.created_at|date:"d.m.Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Общие стили */
+    .article-section {
+        background-color: #f8f9fa;
+    }
+
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin-bottom: 1rem;
+    }
+
+    .breadcrumb-item a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    .breadcrumb-item.active {
+        color: #6c757d;
+    }
+
+    /* Заголовок статьи */
+    .article-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+    }
+
+    .article-meta {
+        margin-bottom: 2rem;
+        color: #6c757d;
+    }
+
+    .meta-item {
+        margin-right: 1.5rem;
+        font-size: 0.95rem;
+    }
+
+    .meta-item i {
+        margin-right: 0.5rem;
+        color: #3498db;
+    }
+
+    /* Изображение статьи */
+    .article-image {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .article-image img {
+        width: 100%;
+        height: auto;
+    }
+
+    /* Содержание статьи */
+    .article-content {
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        line-height: 1.8;
+        color: #2c3e50;
+    }
+
+    .article-content p {
+        margin-bottom: 1.5rem;
+    }
+
+    .article-content h2,
+    .article-content h3,
+    .article-content h4 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: #2c3e50;
+    }
+
+    /* Теги */
+    .article-tags {
+        margin-top: 2rem;
+    }
+
+    .tag {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        margin: 0.25rem;
+        background: #e9ecef;
+        color: #6c757d;
+        border-radius: 20px;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .tag:hover {
+        background: #3498db;
+        color: #ffffff;
+    }
+
+    /* Кнопки поделиться */
+    .share-buttons {
+        border-top: 1px solid #e9ecef;
+        padding-top: 2rem;
+    }
+
+    .share-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        text-decoration: none;
+        transition: transform 0.3s;
+    }
+
+    .share-button:hover {
+        transform: translateY(-3px);
+        color: #ffffff;
+    }
+
+    .share-button.telegram {
+        background: #0088cc;
+    }
+
+    .share-button.facebook {
+        background: #3b5998;
+    }
+
+    .share-button.twitter {
+        background: #1da1f2;
+    }
+
+    /* Похожие статьи */
+    .sidebar-widget {
+        background: #ffffff;
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+    }
+
+    .widget-title {
+        color: #2c3e50;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .related-article {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .related-article:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .related-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .related-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .related-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .related-content h5 {
+        font-size: 1rem;
+        margin: 0 0 0.5rem;
+    }
+
+    .related-content h5 a {
+        color: #2c3e50;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .related-content h5 a:hover {
+        color: #3498db;
+    }
+
+    .related-meta {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+
+    .related-meta i {
+        margin-right: 0.5rem;
+        color: #3498db;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .article-title {
+            font-size: 2rem;
+        }
+
+        .article-content {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}

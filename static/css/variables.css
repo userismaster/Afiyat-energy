@@ -1,0 +1,40 @@
+:root {
+    /* Основные цвета */
+    --primary-color: #27ae60;      /* Основной зеленый */
+    --primary-dark: #219a52;       /* Темно-зеленый для ховера */
+    --primary-light: #2ecc71;      /* Светло-зеленый для акцентов */
+    
+    /* Нейтральные цвета */
+    --text-color: #2c3e50;         /* Основной цвет текста */
+    --text-muted: #6c757d;         /* Приглушенный текст */
+    --text-light: #95a5a6;         /* Светлый текст */
+    
+    /* Фоновые цвета */
+    --bg-primary: #ffffff;         /* Основной фон */
+    --bg-secondary: #f8f9fa;       /* Вторичный фон */
+    --bg-accent: #e8f5e9;         /* Акцентный фон (светло-зеленый) */
+    
+    /* Цвета состояний */
+    --success: #27ae60;           /* Успех */
+    --danger: #e74c3c;            /* Ошибка */
+    --warning: #f1c40f;           /* Предупреждение */
+    
+    /* Цвета границ */
+    --border-color: #e9ecef;      /* Основной цвет границ */
+    --border-dark: #dee2e6;       /* Темный цвет границ */
+    
+    /* Тени */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 5px 20px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.1);
+    
+    /* Скругления */
+    --border-radius-sm: 5px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 15px;
+    
+    /* Переходы */
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}

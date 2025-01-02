@@ -1,0 +1,440 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product_data.name }} - Afiyat Energy{% endblock %}
+
+{% block content %}
+<div class="product-detail">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'catalog:home' %}">{{ translations.nav.home }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'catalog:product_list' %}">{{ translations.nav.catalog }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ product.category.get_absolute_url }}">{{ product_data.category }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ product_data.name }}</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="product-image">
+                    {% if product_data.image %}
+                        <img src="{{ product_data.image.url }}" alt="{{ product_data.name }}" class="img-fluid">
+                    {% else %}
+                        <img src="{% static 'images/no-image.jpg' %}" alt="No image" class="img-fluid">
+                    {% endif %}
+                </div>
+                {% if product_images %}
+                <div class="product-gallery">
+                    {% for image in product_images %}
+                    <div class="gallery-item">
+                        <img src="{{ image.image.url }}" alt="{{ product_data.name }}" class="img-fluid">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <div class="product-info">
+                    <h1>{{ product_data.name }}</h1>
+                    <div class="price">
+                        <span class="amount">{{ translations.catalog.products.from }} {{ product_data.price }} UZS</span>
+                    </div>
+                    <div class="description">
+                        {{ product_data.description|safe }}
+                    </div>
+                    {% if specifications %}
+                    <div class="specifications">
+                        <h3>{{ translations.product.specifications }}</h3>
+                        <table class="table">
+                            <tbody>
+                                {% for spec in specifications %}
+                                <tr>
+                                    <th>{{ spec.name }}</th>
+                                    <td>{{ spec.value }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                    {% if product_data.specifications %}
+                    <div class="specifications">
+                        <h3>{{ translations.product.additional_specifications }}</h3>
+                        {{ product_data.specifications|safe }}
+                    </div>
+                    {% endif %}
+                    <div class="stock">
+                        {% if product_data.stock > 0 %}
+                            <span class="in-stock">{{ translations.product.in_stock }}</span>
+                        {% else %}
+                            <span class="out-of-stock">{{ translations.product.out_of_stock }}</span>
+                        {% endif %}
+                    </div>
+                    {% if product_data.stock > 0 %}
+                    <div class="add-to-cart">
+                        {% csrf_token %}
+                        <div class="quantity d-flex align-items-center mb-3">
+                            <button type="button" class="btn btn-outline-secondary quantity-btn decrease-quantity">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" 
+                                   name="quantity" 
+                                   value="1" 
+                                   min="1" 
+                                   max="{{ product_data.stock }}" 
+                                   class="form-control mx-2"
+                                   style="width: 80px; text-align: center;">
+                            <button type="button" class="btn btn-outline-secondary quantity-btn increase-quantity">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <button type="button" 
+                                class="btn btn-primary add-to-cart-btn" 
+                                data-product-id="{{ product_data.id }}"
+                                data-product-name="{{ product_data.name }}">
+                            <i class="fas fa-shopping-cart"></i>
+                            {{ translations.catalog.products.add_to_cart }}
+                        </button>
+                    </div>
+                    {% endif %}
+
+                    {% if documents %}
+                    <div class="documents mt-4">
+                        <h3>{{ translations.product.documents }}</h3>
+                        <ul class="list-unstyled">
+                            {% for doc in documents %}
+                            <li>
+                                <a href="{{ doc.file.url }}" class="btn btn-outline-primary btn-sm" target="_blank">
+                                    <i class="fas fa-file-download me-2"></i>
+                                    {{ doc.title }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if similar_products %}
+        <div class="similar-products mt-5">
+            <h2>{{ translations.product.similar_products }}</h2>
+            <div class="row">
+                {% for product in similar_products %}
+                <div class="col-md-3">
+                    <div class="product-card">
+                        <a href="{{ product.get_absolute_url }}">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.get_name }}" class="img-fluid">
+                            {% else %}
+                            <img src="{% static 'images/no-image.jpg' %}" alt="No image" class="img-fluid">
+                            {% endif %}
+                            <h3>{{ product.get_name }}</h3>
+                            <div class="price">{{ product.price }} UZS</div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .product-detail {
+        padding: 2rem 0;
+        background-color: #fff;
+    }
+
+    .breadcrumb {
+        margin-bottom: 2rem;
+        background-color: transparent;
+        padding: 0;
+    }
+
+    .product-image {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .product-gallery {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .gallery-item {
+        flex: 0 0 auto;
+        width: 80px;
+        height: 80px;
+        border-radius: 5px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.3s;
+    }
+
+    .gallery-item:hover {
+        border-color: var(--primary-color);
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .product-info {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-info h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
+
+    .price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .description {
+        margin-bottom: 2rem;
+        color: var(--text-color);
+    }
+
+    .specifications {
+        margin-bottom: 2rem;
+    }
+
+    .specifications h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
+
+    .specifications table {
+        width: 100%;
+    }
+
+    .specifications th {
+        width: 40%;
+        font-weight: 600;
+    }
+
+    .stock {
+        margin-bottom: 1rem;
+    }
+
+    .in-stock {
+        color: #28a745;
+        font-weight: 600;
+    }
+
+    .out-of-stock {
+        color: #dc3545;
+        font-weight: 600;
+    }
+
+    .add-to-cart {
+        margin-top: auto;
+    }
+
+    .add-to-cart form {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .quantity {
+        width: 100px;
+    }
+
+    .documents {
+        margin-top: 2rem;
+    }
+
+    .documents h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .documents li {
+        margin-bottom: 0.5rem;
+    }
+
+    .similar-products {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .similar-products h2 {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        color: var(--text-color);
+    }
+
+    .product-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .product-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+    }
+
+    .product-card h3 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+    }
+
+    .product-card .price {
+        font-size: 1rem;
+        color: var(--primary-color);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const quantityInput = document.querySelector('input[name="quantity"]');
+        const decreaseBtn = document.querySelector('.decrease-quantity');
+        const increaseBtn = document.querySelector('.increase-quantity');
+        const addToCartBtn = document.querySelector('.add-to-cart-btn');
+        const maxStock = {{ product_data.stock }};
+
+        function updateQuantityState() {
+            const currentValue = parseInt(quantityInput.value);
+            
+            if (decreaseBtn) {
+                decreaseBtn.disabled = currentValue <= 1;
+            }
+            
+            if (increaseBtn) {
+                increaseBtn.disabled = currentValue >= maxStock;
+            }
+        }
+
+        if (decreaseBtn) {
+            decreaseBtn.addEventListener('click', function() {
+                let currentValue = parseInt(quantityInput.value);
+                if (currentValue > 1) {
+                    quantityInput.value = currentValue - 1;
+                    updateQuantityState();
+                }
+            });
+        }
+
+        if (increaseBtn) {
+            increaseBtn.addEventListener('click', function() {
+                let currentValue = parseInt(quantityInput.value);
+                if (currentValue < maxStock) {
+                    quantityInput.value = currentValue + 1;
+                    updateQuantityState();
+                }
+            });
+        }
+
+        if (quantityInput) {
+            quantityInput.addEventListener('change', function() {
+                let value = parseInt(this.value);
+                if (isNaN(value) || value < 1) {
+                    this.value = 1;
+                } else if (value > maxStock) {
+                    this.value = maxStock;
+                }
+                updateQuantityState();
+            });
+
+            quantityInput.addEventListener('keypress', function(e) {
+                if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                }
+            });
+        }
+
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', function() {
+                const productId = this.dataset.productId;
+                const productName = this.dataset.productName;
+                const quantity = parseInt(quantityInput.value);
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                fetch('{% url "catalog:cart_add" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: quantity
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Обновляем количество товаров в корзине
+                        const cartCount = document.querySelector('.cart-count');
+                        if (cartCount) {
+                            cartCount.textContent = data.cart_count;
+                        }
+                        
+                        // Показываем уведомление об успехе
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Товар добавлен в корзину',
+                            text: `${productName} (${quantity} шт.)`,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        // Показываем уведомление об ошибке
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ошибка',
+                            text: data.error || 'Произошла ошибка при добавлении товара в корзину'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ошибка',
+                        text: 'Произошла ошибка при добавлении товара в корзину'
+                    });
+                });
+            });
+        }
+
+        // Инициализация начального состояния
+        updateQuantityState();
+    });
+</script>
+{% endblock %}

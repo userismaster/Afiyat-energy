@@ -1,0 +1,214 @@
+.cart-page {
+  padding: $spacer * 3 0;
+
+  .page-title {
+    @include text-style(2rem, 700);
+    margin-bottom: $spacer * 2;
+  }
+
+  .cart-items {
+    .cart-item {
+      @include flex(row, flex-start, flex-start);
+      background-color: $white;
+      border-radius: 8px;
+      @include box-shadow(1);
+      padding: $spacer;
+      margin-bottom: $spacer;
+
+      .cart-item-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-right: $spacer * 1.5;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .cart-item-content {
+        flex-grow: 1;
+
+        .cart-item-header {
+          @include flex(row, space-between, flex-start);
+          margin-bottom: $spacer;
+
+          .cart-item-title {
+            @include text-style(1.25rem, 600);
+            margin: 0;
+
+            a {
+              color: $gray-900;
+              text-decoration: none;
+
+              &:hover {
+                color: $primary-color;
+              }
+            }
+          }
+        }
+
+        .cart-item-details {
+          @include flex(row, space-between, center);
+
+          .cart-item-price {
+            .price-current {
+              @include text-style(1.25rem, 600);
+              color: $primary-color;
+            }
+
+            .price-old {
+              color: $gray-500;
+              text-decoration: line-through;
+              margin-left: $spacer * 0.5;
+            }
+          }
+
+          .quantity-control {
+            width: 120px;
+          }
+
+          .cart-item-total {
+            @include text-style(1.25rem, 600);
+            color: $gray-900;
+          }
+        }
+      }
+
+      @include respond-to(sm) {
+        flex-direction: column;
+
+        .cart-item-image {
+          width: 100%;
+          height: 200px;
+          margin-right: 0;
+          margin-bottom: $spacer;
+        }
+
+        .cart-item-details {
+          flex-direction: column;
+          gap: $spacer;
+          align-items: flex-start;
+        }
+      }
+    }
+  }
+
+  .order-summary {
+    background-color: $white;
+    border-radius: 8px;
+    @include box-shadow(1);
+    padding: $spacer * 1.5;
+
+    h3 {
+      @include text-style(1.25rem, 600);
+      margin-bottom: $spacer * 1.5;
+    }
+
+    .summary-items {
+      margin-bottom: $spacer * 1.5;
+
+      .summary-item {
+        @include flex(row, space-between, center);
+        margin-bottom: $spacer;
+        color: $gray-700;
+
+        &.discount {
+          color: #28a745;
+        }
+      }
+    }
+
+    .summary-total {
+      @include flex(row, space-between, center);
+      padding-top: $spacer;
+      border-top: 1px solid $gray-200;
+      margin-bottom: $spacer * 1.5;
+
+      span {
+        @include text-style(1.25rem, 600);
+
+        &.total-amount {
+          color: $primary-color;
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+
+  .promo-code {
+    background-color: $white;
+    border-radius: 8px;
+    @include box-shadow(1);
+    padding: $spacer * 1.5;
+
+    h4 {
+      @include text-style(1rem, 600);
+      margin-bottom: $spacer;
+    }
+
+    .promo-form {
+      .input-group {
+        .form-control {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        .btn {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
+    }
+  }
+
+  .empty-cart {
+    text-align: center;
+    padding: $spacer * 4 0;
+
+    img {
+      width: 200px;
+      margin-bottom: $spacer * 2;
+    }
+
+    h2 {
+      @include text-style(1.5rem, 600);
+      margin-bottom: $spacer;
+    }
+
+    p {
+      color: $gray-600;
+      margin-bottom: $spacer * 2;
+    }
+  }
+
+  .recommended-products {
+    margin-top: $spacer * 4;
+
+    h2 {
+      @include text-style(1.5rem, 600);
+      margin-bottom: $spacer * 2;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: $spacer * 2;
+
+      @include respond-to(lg) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      @include respond-to(md) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include respond-to(sm) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

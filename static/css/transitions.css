@@ -1,0 +1,176 @@
+/* Основной контейнер для анимаций */
+.page-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+/* Анимация при уходе со страницы */
+.page-transition.fade-out {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Анимация при загрузке страницы */
+.page-content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.page-content.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Анимация для ссылок */
+.animated-link {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+.animated-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: #3498db;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.animated-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Анимация для карточек */
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Анимация для кнопок */
+.btn-animated {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-animated::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn-animated:hover::before {
+    width: 300%;
+    height: 300%;
+}
+
+/* Анимация для изображений */
+.image-hover {
+    overflow: hidden;
+}
+
+.image-hover img {
+    transition: transform 0.5s ease;
+}
+
+.image-hover:hover img {
+    transform: scale(1.05);
+}
+
+/* Анимация для меню */
+.menu-item {
+    position: relative;
+}
+
+.menu-item::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #3498db;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.menu-item:hover::after,
+.menu-item.active::after {
+    transform: scaleX(1);
+}
+
+/* Анимация для модальных окон */
+.modal-animated {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.9);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+.modal-animated.show {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+/* Анимация для прелоадера */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

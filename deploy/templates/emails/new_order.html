@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Новый заказ #{{ order.id }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .order-details {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .order-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .order-items th,
+        .order-items td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .order-items th {
+            background-color: #f8f9fa;
+        }
+        .total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Новый заказ #{{ order.id }}</h1>
+            <p>{{ order.created_at|date:"d.m.Y H:i" }}</p>
+        </div>
+
+        <div class="order-details">
+            <h2>Информация о заказе</h2>
+            <p><strong>Имя:</strong> {{ order.first_name }} {{ order.last_name }}</p>
+            <p><strong>Email:</strong> {{ order.email }}</p>
+            <p><strong>Телефон:</strong> {{ order.phone }}</p>
+            <p><strong>Адрес:</strong> {{ order.address }}</p>
+            {% if order.comment %}
+            <p><strong>Комментарий:</strong> {{ order.comment }}</p>
+            {% endif %}
+        </div>
+
+        <h2>Товары</h2>
+        <table class="order-items">
+            <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.price }} ₽</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.get_total_price }} ₽</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total">
+            <p>Итого: {{ order.get_total_price }} ₽</p>
+        </div>
+
+        <div class="footer">
+            <p>Спасибо за ваш заказ!</p>
+            <p>С уважением, команда Afiyat Energy</p>
+        </div>
+    </div>
+</body>
+</html>

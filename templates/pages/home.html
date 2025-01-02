@@ -1,0 +1,1115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ translations.home.meta.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section */
+    .hero {
+        position: relative;
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+        color: var(--bg-primary);
+        padding: 6rem 0;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('{% static "images/hero-pattern.svg" %}');
+        background-size: cover;
+        opacity: 0.1;
+        animation: moveBackground 30s linear infinite;
+    }
+
+    @keyframes moveBackground {
+        0% { background-position: 0 0; }
+        100% { background-position: 100% 100%; }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s ease forwards;
+    }
+
+    .hero p {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s ease 0.2s forwards;
+    }
+
+    .hero-buttons {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s ease 0.4s forwards;
+    }
+
+    .hero-buttons .btn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: var(--border-radius-md);
+        transition: all var(--transition-base);
+    }
+
+    .hero-buttons .btn-primary {
+        background: var(--bg-primary);
+        color: var(--primary-color);
+        border: none;
+    }
+
+    .hero-buttons .btn-primary:hover {
+        background: var(--bg-accent);
+        transform: translateY(-2px);
+    }
+
+    .hero-buttons .btn-outline-light {
+        border-width: 2px;
+    }
+
+    .hero-buttons .btn-outline-light:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Декоративные элементы */
+    .hero-shape {
+        position: absolute;
+        pointer-events: none;
+    }
+
+    .hero-shape-1 {
+        top: 10%;
+        left: 5%;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .hero-shape-2 {
+        bottom: 15%;
+        right: 10%;
+        width: 70px;
+        height: 70px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 8s ease-in-out infinite;
+    }
+
+    .hero-shape-3 {
+        top: 20%;
+        right: 15%;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        transform: rotate(45deg);
+        animation: float 7s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .hero {
+            padding: 4rem 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+        }
+
+        .hero-buttons .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+        }
+    }
+
+    /* Featured Products Section */
+    .featured-products {
+        padding: 5rem 0;
+        background-color: var(--bg-secondary);
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-header-content {
+        max-width: 600px;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .section-description {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        margin-bottom: 0;
+    }
+
+    .featured-products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+
+    /* Product Card */
+    .product-card {
+        background: transparent;
+        border: none;
+        transition: all var(--transition-base);
+    }
+
+    .product-card-inner {
+        background: var(--bg-primary);
+        border-radius: var(--border-radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: all var(--transition-base);
+    }
+
+    .product-card:hover .product-card-inner {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .product-image {
+        position: relative;
+        padding-top: 75%;
+        background: var(--bg-secondary);
+        overflow: hidden;
+    }
+
+    .product-image img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform var(--transition-base);
+    }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.05);
+    }
+
+    .product-badge {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background: var(--success);
+        color: var(--bg-primary);
+        padding: 0.5rem 1rem;
+        border-radius: var(--border-radius-sm);
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .product-actions {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        opacity: 0;
+        transform: translateX(10px);
+        transition: all var(--transition-base);
+    }
+
+    .product-card:hover .product-actions {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .product-actions .btn {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: var(--bg-primary);
+        color: var(--text-color);
+        border: none;
+        box-shadow: var(--shadow-sm);
+        transition: all var(--transition-base);
+    }
+
+    .product-actions .btn:hover {
+        background: var(--primary-color);
+        color: var(--bg-primary);
+        transform: scale(1.1);
+    }
+
+    .product-actions .btn:disabled {
+        background: var(--text-light);
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .product-info {
+        padding: 1.5rem;
+    }
+
+    .product-title {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-color);
+        text-decoration: none;
+        margin-bottom: 1rem;
+        transition: color var(--transition-base);
+    }
+
+    .product-title:hover {
+        color: var(--primary-color);
+    }
+
+    .product-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+    }
+
+    .product-category {
+        color: var(--text-muted);
+    }
+
+    .product-category i {
+        margin-right: 0.5rem;
+    }
+
+    .product-stock {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .product-price {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .old-price {
+        color: var(--text-muted);
+        text-decoration: line-through;
+        font-size: 0.9rem;
+    }
+
+    .current-price {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .featured-products {
+            padding: 3rem 0;
+        }
+
+        .section-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .section-header-content {
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .featured-products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+    }
+
+    /* Quick View Modal */
+    .quick-view-popup {
+        max-width: 800px !important;
+    }
+
+    .quick-view-content {
+        padding: 0 !important;
+    }
+
+    .quick-view-modal {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .quick-view-image {
+        position: relative;
+        padding-top: 100%;
+        background: var(--bg-secondary);
+        border-radius: var(--border-radius-md);
+        overflow: hidden;
+    }
+
+    .quick-view-image img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .quick-view-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .quick-view-price {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .quick-view-stock {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .quick-view-description {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+        .quick-view-modal {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .quick-view-image {
+            padding-top: 75%;
+        }
+    }
+
+    /* Popular Categories */
+    .popular-categories {
+        padding: 5rem 0;
+        background: var(--bg-primary);
+    }
+
+    .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .category-card {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem;
+        background: var(--bg-primary);
+        border-radius: var(--border-radius-lg);
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        color: var(--text-color);
+        transition: all var(--transition-base);
+    }
+
+    .category-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--primary-color);
+        box-shadow: var(--shadow-md);
+    }
+
+    .category-icon {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-accent);
+        border-radius: var(--border-radius-md);
+        margin-right: 1.5rem;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        transition: all var(--transition-base);
+    }
+
+    .category-card:hover .category-icon {
+        background: var(--primary-color);
+        color: var(--bg-primary);
+        transform: scale(1.1);
+    }
+
+    .category-info {
+        flex: 1;
+    }
+
+    .category-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 0.25rem;
+        color: var(--text-color);
+    }
+
+    .category-count {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin: 0;
+    }
+
+    .category-arrow {
+        margin-left: 1rem;
+        color: var(--text-muted);
+        transition: all var(--transition-base);
+    }
+
+    .category-card:hover .category-arrow {
+        color: var(--primary-color);
+        transform: translateX(5px);
+    }
+
+    /* Анимация появления */
+    .categories-grid {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease forwards;
+        animation-delay: 0.2s;
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .popular-categories {
+            padding: 3rem 0;
+        }
+
+        .categories-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .category-card {
+            padding: 1rem;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            font-size: 1.25rem;
+            margin-right: 1rem;
+        }
+    }
+
+    /* About Section */
+    .about-section {
+        padding: 5rem 0;
+        background: var(--bg-primary);
+        overflow: hidden;
+    }
+
+    .about-content {
+        position: relative;
+    }
+
+    .about-text {
+        margin-top: 2rem;
+    }
+
+    .about-text .lead {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: var(--text-color);
+        margin-bottom: 2rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-accent);
+        color: var(--primary-color);
+        border-radius: var(--border-radius-md);
+        font-size: 1.25rem;
+        flex-shrink: 0;
+        transition: all var(--transition-base);
+    }
+
+    .feature-item:hover .feature-icon {
+        background: var(--primary-color);
+        color: var(--bg-primary);
+        transform: scale(1.1);
+    }
+
+    .feature-content h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+    }
+
+    .feature-content p {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin: 0;
+    }
+
+    .about-stats {
+        display: flex;
+        justify-content: space-between;
+        margin: 3rem 0;
+        padding: 2rem;
+        background: var(--bg-secondary);
+        border-radius: var(--border-radius-lg);
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .about-cta {
+        margin-top: 2rem;
+    }
+
+    .about-images {
+        position: relative;
+        height: 600px;
+    }
+
+    .about-image {
+        position: absolute;
+        border-radius: var(--border-radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        transition: all var(--transition-base);
+    }
+
+    .about-image:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .main-image {
+        width: 70%;
+        height: 400px;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+    }
+
+    .top-image {
+        width: 50%;
+        height: 250px;
+        left: 0;
+        top: 0;
+        z-index: 1;
+    }
+
+    .bottom-image {
+        width: 50%;
+        height: 250px;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .about-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .experience-badge {
+        position: absolute;
+        right: 30px;
+        bottom: 30px;
+        width: 120px;
+        height: 120px;
+        background: var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 3;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .badge-content {
+        text-align: center;
+        color: var(--bg-primary);
+    }
+
+    .badge-content .years {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1;
+        display: block;
+    }
+
+    .badge-content .text {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .about-content {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s ease forwards;
+    }
+
+    .about-images {
+        opacity: 0;
+        transform: translateX(30px);
+        animation: fadeInRight 1s ease forwards;
+        animation-delay: 0.3s;
+    }
+
+    @keyframes fadeInRight {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @media (max-width: 991px) {
+        .about-images {
+            height: 500px;
+            margin-top: 3rem;
+        }
+
+        .main-image {
+            width: 80%;
+        }
+
+        .top-image,
+        .bottom-image {
+            width: 60%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .features-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .about-stats {
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .about-images {
+            height: 400px;
+        }
+
+        .experience-badge {
+            width: 100px;
+            height: 100px;
+        }
+
+        .badge-content .years {
+            font-size: 2rem;
+        }
+
+        .badge-content .text {
+            font-size: 0.8rem;
+        }
+    }
+
+    /* Popular Products */
+    .popular-products {
+        padding: 5rem 0;
+        background: var(--bg-primary);
+    }
+
+    .popular-products .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 3rem;
+    }
+
+    .popular-products .section-header-content {
+        max-width: 600px;
+    }
+
+    .popular-products h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
+
+    .popular-products p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .popular-products .btn-outline-primary {
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        border-width: 2px;
+    }
+
+    .popular-products .btn-outline-primary:hover {
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <!-- Декоративные элементы -->
+    <div class="hero-shape hero-shape-1"></div>
+    <div class="hero-shape hero-shape-2"></div>
+    <div class="hero-shape hero-shape-3"></div>
+
+    <div class="container">
+        <div class="hero-content">
+            <h1>
+                {{ translations.home.hero.title_start }} 
+                <span>{{ translations.home.hero.title_highlight }}</span>
+                {{ translations.home.hero.title_end }}
+            </h1>
+            <p>{{ translations.home.hero.description }}</p>
+            <div class="hero-buttons">
+                <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">{{ translations.home.hero.cta }}</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Products -->
+<section class="popular-products">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-header-content">
+                <h2 class="section-title">{{ translations.home.popular_products.title }}</h2>
+                <p class="section-description">{{ translations.home.popular_products.description }}</p>
+            </div>
+            <a href="{% url 'catalog:product_list' %}" class="btn btn-outline-primary">
+                {{ translations.home.popular_products.view_all }}
+                <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+
+        <div class="products-grid">
+            {% for product in popular_products %}
+            <div class="product-card">
+                <div class="product-image">
+                    {% if product.image %}
+                        <img src="/media/{{ product.image }}" alt="{{ product.get_name|default:product.name }}">
+                    {% else %}
+                        <div class="no-image">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    {% endif %}
+                    <div class="product-actions">
+                        <a href="{{ product.get_absolute_url }}" class="btn btn-primary">
+                            <i class="fas fa-eye"></i>
+                            {{ translations.home.popular_products.view_details }}
+                        </a>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">
+                        <a href="{{ product.get_absolute_url }}">
+                            {% if current_language == 'en' %}
+                                {{ product.name_en|default:product.name }}
+                            {% elif current_language == 'uz' %}
+                                {{ product.name_uz|default:product.name }}
+                            {% else %}
+                                {{ product.name }}
+                            {% endif %}
+                        </a>
+                    </h3>
+                    <div class="product-category">
+                        <a href="{{ product.category.get_absolute_url }}">
+                            {% if current_language == 'en' %}
+                                {{ product.category.name_en|default:product.category.name }}
+                            {% elif current_language == 'uz' %}
+                                {{ product.category.name_uz|default:product.category.name }}
+                            {% else %}
+                                {{ product.category.name }}
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="product-price">
+                        {{ product.price }} UZS
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Popular Categories -->
+<section class="popular-categories">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-header-content">
+                <h2 class="section-title">{{ translations.home.categories.title }}</h2>
+                <p class="section-description">{{ translations.home.categories.description }}</p>
+            </div>
+        </div>
+
+        <div class="categories-grid">
+            {% for category in popular_categories %}
+            <a href="{{ category.get_absolute_url }}" class="category-card">
+                <div class="category-icon">
+                    <i class="{{ category.icon_class }}"></i>
+                </div>
+                <div class="category-info">
+                    <h3 class="category-title">{{ category.name }}</h3>
+                    <p class="category-count">{{ category.total_products }} {{ translations.home.categories.products_count }}</p>
+                </div>
+                <div class="category-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6">
+                <div class="about-content">
+                    <div class="section-header">
+                        <div class="section-header-content">
+                            <h2 class="section-title">{{ translations.home.about.title }}</h2>
+                            <p class="section-description">{{ translations.home.about.subtitle }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="about-text">
+                        <p class="lead">{{ translations.home.about.description }}</p>
+                        
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>{{ translations.home.about.features.quality.title }}</h4>
+                                    <p>{{ translations.home.about.features.quality.description }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>{{ translations.home.about.features.delivery.title }}</h4>
+                                    <p>{{ translations.home.about.features.delivery.description }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-headset"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>{{ translations.home.about.features.support.title }}</h4>
+                                    <p>{{ translations.home.about.features.support.description }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>{{ translations.home.about.features.warranty.title }}</h4>
+                                    <p>{{ translations.home.about.features.warranty.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">{{ translations.home.about.stats.experience.number }}</div>
+                                <div class="stat-label">{{ translations.home.about.stats.experience.label }}</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">{{ translations.home.about.stats.clients.number }}</div>
+                                <div class="stat-label">{{ translations.home.about.stats.clients.label }}</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">{{ translations.home.about.stats.projects.number }}</div>
+                                <div class="stat-label">{{ translations.home.about.stats.projects.label }}</div>
+                            </div>
+                        </div>
+
+                        <div class="about-buttons mt-4">
+                            <a href="{% url 'catalog:about' %}" class="btn btn-primary me-3">
+                                {{ translations.home.about.learn_more }}
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                            <a href="{% url 'contacts:contact' %}" class="btn btn-outline-primary">
+                                {{ translations.home.about.contact_us }}
+                                <i class="fas fa-envelope ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="about-images">
+                    <div class="about-image main-image">
+                        <img src="{% static 'images/about/main.jpg' %}" alt="Afiyat Energy" class="img-fluid">
+                    </div>
+                    <div class="about-image top-image">
+                        <img src="{% static 'images/about/top.jpg' %}" alt="{{ translations.home.about.title }}" class="img-fluid">
+                    </div>
+                    <div class="about-image bottom-image">
+                        <img src="{% static 'images/about/bottom.jpg' %}" alt="{{ translations.home.about.title }}" class="img-fluid">
+                    </div>
+                    <div class="experience-badge">
+                        <div class="badge-content">
+                            <span class="years">{{ translations.home.about.experience.years }}</span>
+                            <span class="text">{{ translations.home.about.experience.text }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Promotions -->
+{% if promotions %}
+<section class="promotions">
+    <div class="container">
+        <h2>{{ translations.home.promotions.title }}</h2>
+        <div class="row">
+            {% for promotion in promotions %}
+            <div class="col-md-4">
+                <div class="card promotion-card">
+                    <img src="{{ promotion.image.url }}" class="card-img-top" alt="{{ promotion.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ promotion.title }}</h5>
+                        <p class="card-text">{{ promotion.description|safe|truncatewords_html:20 }}</p>
+                        <div class="promotion-info">
+                            <span class="badge bg-danger">-{{ promotion.discount }}%</span>
+                            <small class="text-muted">{{ translations.home.promotions.end_date }} {{ promotion.end_date|date:"d.m.Y" }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/pages/home.js' %}"></script>
+{% endblock %}

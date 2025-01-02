@@ -1,0 +1,42 @@
+{% load static %}
+
+<div class="product-card">
+    <div class="product-card-inner">
+        <div class="product-image">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.get_name }}" class="img-fluid">
+            {% else %}
+                <img src="{% static 'images/no-image.jpg' %}" alt="No image" class="img-fluid">
+            {% endif %}
+            
+            {% if product.stock > 0 %}
+                <div class="product-badge">{{ translations.product.in_stock }}</div>
+            {% endif %}
+            
+            <div class="product-actions">
+                <button class="btn add-to-cart-btn" 
+                        data-product-id="{{ product.id }}" 
+                        data-product-name="{{ product.get_name }}"
+                        data-product-price="{{ product.price }}"
+                        {% if not product.stock > 0 %}disabled{% endif %}>
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+                <a href="{{ product.get_absolute_url }}" class="btn">
+                    <i class="fas fa-eye"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="product-info">
+            <h3 class="product-title">
+                <a href="{{ product.get_absolute_url }}">{{ product.get_name }}</a>
+            </h3>
+            <div class="product-category">
+                <a href="{{ product.category.get_absolute_url }}">{{ product.category.get_name }}</a>
+            </div>
+            <div class="product-price">
+                {{ product.price }} UZS
+            </div>
+        </div>
+    </div>
+</div>

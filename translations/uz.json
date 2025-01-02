@@ -1,0 +1,270 @@
+{
+    "nav": {
+        "home": "Bosh sahifa",
+        "about": "Kompaniya haqida",
+        "catalog": "Katalog",
+        "contacts": "Kontaktlar",
+        "blog": "Blog"
+    },
+    "about": {
+        "title": "Afiyat Energy haqida",
+        "description": "O'zbekistonda neft mahsulotlari va o'g'itlarning yetakchi yetkazib beruvchisi",
+        "history_title": "Bizning tarix",
+        "history_text": "Afiyat Energy Toshkentning Mirzo Ulug'bek tumanida tashkil etilgan va 20 yildan ortiq vaqt davomida neft mahsulotlari va o'g'itlar bozorida muvaffaqiyatli faoliyat yuritib kelmoqda.",
+        "history_text_additional": "Shu vaqt ichida biz o'z majburiyatlarini doimo bajaradigan va eng yuqori sifatli mahsulotlarni taqdim etadigan ishonchli hamkor sifatida obro' qozondik.",
+        "values_title": "Bizning qadriyatlar",
+        "values_quality": "Sifat",
+        "values_quality_description": "Biz barcha mahsulotlarimizning yuqori sifatini kafolatlaymiz",
+        "values_reliability": "Ishonchlilik",
+        "values_reliability_description": "Biz doimo o'z majburiyatlarimizni o'z vaqtida bajaramiz",
+        "values_clients": "Mijozlar",
+        "values_clients_description": "Har bir mijozga individual yondashuv",
+        "values_innovation": "Innovatsiya",
+        "values_innovation_description": "Doimiy rivojlanish va yangi texnologiyalarni joriy etish",
+        "mission_title": "Bizning vazifamiz",
+        "mission_text": "Bizning vazifamiz - mijozlarni sifatli neft mahsulotlari va o'g'itlar bilan ta'minlash, ularning biznesi va O'zbekiston qishloq xo'jaligini rivojlantirishga hissa qo'shish",
+        "team_title": "Bizning jamoa",
+        "team_ceo": "Alisher Raximov",
+        "team_ceo_position": "Bosh direktor",
+        "team_sales": "Dilshod Karimov",
+        "team_sales_position": "Savdo direktori",
+        "team_tech": "Baxtiyor Usmonov",
+        "team_tech_position": "Texnik direktor",
+        "team_quality": "Nodira Azizova",
+        "team_quality_position": "Sifat menejeri",
+        "years_market": "yil bozorda",
+        "happy_clients": "mamnun mijozlar",
+        "employees": "xodimlar",
+        "quality_guarantee": "sifat kafolati"
+    },
+    "product": {
+        "specifications": "Xususiyatlar",
+        "additional_specifications": "Qo'shimcha xususiyatlar",
+        "in_stock": "Mavjud",
+        "out_of_stock": "Mavjud emas",
+        "add_to_cart": "Savatga qo'shish"
+    },
+    "blog": {
+        "title": "Bizning blog",
+        "subtitle": "Kompaniyamiz va energetika sohasi haqidagi eng so'nggi yangiliklar va maqolalar",
+        "categories": "Kategoriyalar",
+        "latest_posts": "So'nggi maqolalar",
+        "read_more": "Batafsil",
+        "author": "Muallif",
+        "date": "Sana"
+    },
+    "contacts": {
+        "title": "Bog'lanish",
+        "description": "Biz bilan qulay usulda bog'laning",
+        "address_title": "Manzilimiz",
+        "address": "Toshkent sh., Mirobod tumani, Afrosiyob ko'chasi, 4B",
+        "phone_title": "Telefon",
+        "phone": "+998 71 200 00 00",
+        "email_title": "Email",
+        "email": "info@afiyat-energy.uz",
+        "form_title": "Xabar yuborish",
+        "form_name": "Ismingiz",
+        "form_email": "Email",
+        "form_phone": "Telefon",
+        "form_subject": "Mavzu",
+        "form_message": "Xabar",
+        "form_submit": "Yuborish",
+        "success_message": "Xabaringiz muvaffaqiyatli yuborildi! Tez orada siz bilan bog'lanamiz.",
+        "error_message": "Xabar yuborishda xatolik yuz berdi. Iltimos, qayta urinib ko'ring.",
+        "required_fields": "Iltimos, barcha majburiy maydonlarni to'ldiring."
+    },
+    "catalog": {
+        "meta": {
+            "title": "Mahsulotlar katalogi - Afiyat Energy"
+        },
+        "title": "Bizning mahsulotlar",
+        "description": "Barcha mahsulotlarimizni ko'rib chiqing",
+        "filters": {
+            "title": "Filtrlar",
+            "categories": "Kategoriyalar",
+            "price": "Narx",
+            "price_range": "Narx oralig'i",
+            "min_price": "Minimal narx",
+            "max_price": "Maksimal narx",
+            "availability": "Mavjudligi",
+            "in_stock": "Omborda mavjud",
+            "apply": "Qo'llash",
+            "reset": "Bekor qilish",
+            "sort": {
+                "label": "Saralash",
+                "popular": "Ommabop",
+                "price_asc": "Narx: o'sish bo'yicha",
+                "price_desc": "Narx: kamayish bo'yicha",
+                "new": "Eng yangi"
+            }
+        },
+        "products": {
+            "found": "ta mahsulot topildi",
+            "no_results": "Mahsulot topilmadi",
+            "from": "Narxi",
+            "add_to_cart": "Savatga qo'shish",
+            "out_of_stock": "Omborda yo'q"
+        },
+        "pagination": {
+            "previous": "Oldingi",
+            "next": "Keyingi"
+        },
+        "categories": {
+            "fertilizers": {
+                "title": "O'g'itlar",
+                "description": "Turli ekinlar uchun yuqori sifatli o'g'itlarning keng assortimenti",
+                "subcategories": {
+                    "macro": {
+                        "title": "Makroelementli o'g'itlar (NPK va S)",
+                        "description": "Asosiy ozuqa elementlarini o'z ichiga olgan o'g'itlar: azot, fosfor, kaliy va oltingugurt"
+                    },
+                    "complex": {
+                        "title": "Kompleks mineral o'g'itlar",
+                        "description": "Turli tuproq va ekinlar uchun muvozanatlashtirilgan kompleks o'g'itlar"
+                    },
+                    "water": {
+                        "title": "Suvda eruvchan o'g'itlar",
+                        "description": "Tomchilab sug'orish va bargdan oziqlantirish uchun to'liq eruvchan o'g'itlar"
+                    },
+                    "special": {
+                        "title": "Maxsus o'g'itlar",
+                        "description": "O'simliklarning maxsus ehtiyojlari uchun ixtisoslashtirilgan o'g'itlar"
+                    }
+                }
+            }
+        }
+    },
+    "home": {
+        "meta": {
+            "title": "Afiyat Energy - Energetika uskunalari"
+        },
+        "hero": {
+            "title_start": "Energetika uchun",
+            "title_highlight": "zamonaviy",
+            "title_end": "yechimlar",
+            "description": "Biz sizning biznesingiz uchun sifatli energetika uskunalarining keng tanlovini taklif qilamiz",
+            "cta": "Katalogni ko'rish"
+        },
+        "popular_products": {
+            "title": "Mashhur mahsulotlar",
+            "description": "Mijozlarimiz orasida eng ko'p talab qilinadigan mahsulotlarimiz bilan tanishing",
+            "view_all": "Barcha mahsulotlarni ko'rish"
+        },
+        "categories": {
+            "title": "Mahsulot kategoriyalari",
+            "description": "Mahsulotlarni ko'rish uchun kategoriyani tanlang",
+            "products_count": "{count} mahsulot"
+        },
+        "products": {
+            "title": "Mashhur mahsulotlar",
+            "price": "{price} so'm",
+            "add_to_cart": "Savatga qo'shish"
+        },
+        "about": {
+            "title": "Afiyat Energy haqida",
+            "subtitle": "Neft mahsulotlari va o'g'itlar sohasida ishonchli hamkoringiz",
+            "description": "Biz sanoat korxonalari va qishloq xo'jaligi uchun yuqori sifatli neft mahsulotlari va o'g'itlarni yetkazib berishga ixtisoslashganmiz.",
+            "features": {
+                "quality": {
+                    "title": "Sifat",
+                    "description": "Faqat yetakchi ishlab chiqaruvchilarning sertifikatlangan mahsulotlari"
+                },
+                "delivery": {
+                    "title": "Yetkazib berish",
+                    "description": "O'zbekiston va MDH davlatlari bo'ylab tez yetkazib berish"
+                },
+                "support": {
+                    "title": "Qo'llab-quvvatlash",
+                    "description": "Professional maslahat va texnik yordam"
+                },
+                "warranty": {
+                    "title": "Kafolat",
+                    "description": "Kafolat va kafolatdan keyingi xizmat"
+                }
+            },
+            "stats": {
+                "experience": {
+                    "number": "10+",
+                    "label": "Yillik tajriba"
+                },
+                "clients": {
+                    "number": "1000+",
+                    "label": "Mijozlar"
+                },
+                "projects": {
+                    "number": "500+",
+                    "label": "Loyihalar"
+                }
+            },
+            "buttons": {
+                "more": "Kompaniya haqida batafsil",
+                "contact": "Biz bilan bog'lanish"
+            },
+            "badge": {
+                "years": "yil",
+                "experience": "tajriba"
+            }
+        }
+    },
+    "cart": {
+        "title": "Savatcha",
+        "empty": "Savatingiz bo'sh",
+        "product": "Mahsulot",
+        "quantity": "Soni",
+        "price": "Narxi",
+        "total": "Jami",
+        "remove": "O'chirish",
+        "continue_shopping": "Xaridni davom ettirish",
+        "checkout": "Buyurtma berish",
+        "update": "Yangilash"
+    },
+    "checkout": {
+        "title": "Buyurtma berish",
+        "contact_info": "Aloqa ma'lumotlari",
+        "first_name": "Ism",
+        "last_name": "Familiya",
+        "email": "Email",
+        "phone": "Telefon",
+        "address": "Yetkazib berish manzili",
+        "comment": "Buyurtma izohi",
+        "order_summary": "Buyurtma tafsilotlari",
+        "submit": "Buyurtma berish",
+        "required_fields": "Barcha majburiy maydonlarni to'ldiring",
+        "error": "Buyurtma yaratishda xatolik yuz berdi"
+    },
+    "order": {
+        "success_title": "Buyurtmangiz uchun rahmat!",
+        "success_message": "Sizning buyurtmangiz muvaffaqiyatli qabul qilindi. Tez orada siz bilan bog'lanamiz.",
+        "order_number": "Buyurtma raqami",
+        "back_to_home": "Bosh sahifaga qaytish"
+    },
+    "footer": {
+        "about": {
+            "title": "Kompaniya haqida",
+            "description": "Afiyat Energy - O'zbekistonda neft mahsulotlari va o'g'itlarning yetakchi yetkazib beruvchisi. Biz sanoat va xususiy sektor uchun yechimlarning keng assortimentini taklif qilamiz."
+        },
+        "navigation": {
+            "title": "Navigatsiya",
+            "about": "Kompaniya haqida",
+            "catalog": "Katalog",
+            "blog": "Blog",
+            "contacts": "Kontaktlar"
+        },
+        "contacts": {
+            "title": "Kontaktlar",
+            "address": "Mirzo-Ulug'bek ko'chasi, 100, Toshkent",
+            "phone": "+998 99 999 99 99",
+            "email": "info@afiyat-energy.uz"
+        },
+        "social": {
+            "facebook": "Facebook'da kuzating",
+            "telegram": "Telegram'da qo'shiling",
+            "instagram": "Instagram'da kuzating"
+        },
+        "copyright": {
+            "rights": "Barcha huquqlar himoyalangan.",
+            "developed": "Ishlab chiqilgan",
+            "team": "Afiyat Energy jamoasi tomonidan"
+        }
+    }
+}

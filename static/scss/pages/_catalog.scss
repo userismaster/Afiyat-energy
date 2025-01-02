@@ -1,0 +1,149 @@
+.catalog-page {
+  padding: $spacer * 3 0;
+
+  .filters-sidebar {
+    @include box-shadow(1);
+    background-color: $white;
+    border-radius: 8px;
+    padding: $spacer * 1.5;
+
+    .filters-header {
+      @include flex(row, space-between, center);
+      margin-bottom: $spacer * 1.5;
+
+      h3 {
+        @include text-style(1.25rem, 600);
+        margin: 0;
+      }
+    }
+
+    .filter-section {
+      margin-bottom: $spacer * 2;
+
+      h4 {
+        @include text-style(1rem, 600);
+        margin-bottom: $spacer;
+      }
+
+      .price-filter {
+        .price-inputs {
+          @include flex(row, space-between, center);
+          gap: $spacer;
+          margin-bottom: $spacer;
+
+          input {
+            width: calc(50% - #{$spacer * 0.5});
+          }
+        }
+
+        .price-range {
+          margin-bottom: $spacer;
+        }
+      }
+
+      .filter-options {
+        .form-check {
+          margin-bottom: $spacer * 0.5;
+
+          .form-check-label {
+            @include flex(row, space-between, center);
+            width: 100%;
+            color: $gray-700;
+            cursor: pointer;
+
+            .count {
+              color: $gray-500;
+              font-size: 0.875rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .catalog-header {
+    margin-bottom: $spacer * 2;
+
+    h1 {
+      @include text-style(2rem, 700);
+      margin-bottom: $spacer;
+    }
+
+    .catalog-controls {
+      @include flex(row, space-between, center);
+      
+      .products-found {
+        color: $gray-600;
+      }
+
+      .sorting {
+        width: 200px;
+      }
+    }
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacer * 2;
+    margin-bottom: $spacer * 3;
+
+    @include respond-to(lg) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include respond-to(sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .no-products {
+    text-align: center;
+    padding: $spacer * 3;
+
+    img {
+      width: 200px;
+      margin-bottom: $spacer * 2;
+    }
+
+    h3 {
+      @include text-style(1.5rem, 600);
+      margin-bottom: $spacer;
+    }
+
+    p {
+      color: $gray-600;
+    }
+  }
+
+  .pagination-wrapper {
+    @include flex(row, center, center);
+    margin-top: $spacer * 3;
+
+    .pagination {
+      .page-item {
+        margin: 0 2px;
+
+        .page-link {
+          border-radius: 4px;
+          color: $gray-700;
+          padding: $spacer * 0.5 $spacer;
+          
+          &:hover {
+            background-color: $gray-100;
+          }
+        }
+
+        &.active .page-link {
+          background-color: $primary-color;
+          border-color: $primary-color;
+          color: $white;
+        }
+
+        &.disabled .page-link {
+          color: $gray-400;
+        }
+      }
+    }
+  }
+}

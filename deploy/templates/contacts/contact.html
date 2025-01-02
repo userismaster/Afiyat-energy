@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load contact_tags %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-section {
+        padding: 5rem 0;
+        background: var(--bg-primary);
+    }
+
+    .contact-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .contact-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+    }
+
+    .contact-header p {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .contact-info-card {
+        background: var(--bg-secondary);
+        border-radius: var(--border-radius-lg);
+        padding: 2rem;
+        height: 100%;
+        transition: transform var(--transition-base);
+    }
+
+    .contact-info-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .contact-info-icon {
+        width: 50px;
+        height: 50px;
+        background: var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .contact-info-icon i {
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    .contact-info-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-info-text {
+        color: var(--text-muted);
+        margin-bottom: 0;
+    }
+
+    .contact-form {
+        background: var(--bg-secondary);
+        padding: 2rem;
+        border-radius: var(--border-radius-lg);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+        border: 1px solid var(--border-color);
+        padding: 0.75rem 1rem;
+        border-radius: var(--border-radius);
+    }
+
+    .btn-submit {
+        background: var(--primary-color);
+        color: white;
+        padding: 0.75rem 2rem;
+        border: none;
+        border-radius: var(--border-radius);
+        transition: background var(--transition-base);
+    }
+
+    .btn-submit:hover {
+        background: var(--primary-color-dark);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="contact-section">
+    <div class="container">
+        <!-- Header -->
+        <div class="contact-header">
+            <h1>{{ page_title }}</h1>
+            <p>{{ page_subtitle }}</p>
+        </div>
+
+        <!-- Contact Info Cards -->
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="contact-info-title">{{ contact_labels.address }}</h3>
+                    <p class="contact-info-text">{{ contact_info.address|get_dict_value:current_language }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3 class="contact-info-title">{{ contact_labels.phone }}</h3>
+                    <p class="contact-info-text">{{ contact_info.phone }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 class="contact-info-title">{{ contact_labels.email }}</h3>
+                    <p class="contact-info-text">{{ contact_info.email }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="contact-form">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="name" placeholder="{{ form_placeholders.name }}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="email" class="form-control" name="email" placeholder="{{ form_placeholders.email }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" class="form-control" name="phone" placeholder="{{ form_placeholders.phone }}" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="subject" placeholder="{{ form_placeholders.subject }}" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" name="message" rows="5" placeholder="{{ form_placeholders.message }}" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-submit">{{ form_placeholders.submit }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

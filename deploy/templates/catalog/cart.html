@@ -1,0 +1,456 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ translations.cart.meta.title }}{% endblock %}
+
+{% block content %}
+<div class="cart-header">
+    <div class="container">
+        <h1>{{ translations.cart.title }}</h1>
+        <p class="lead">{{ translations.cart.description }}</p>
+    </div>
+</div>
+
+<div class="cart-content">
+    <div class="container">
+        {% csrf_token %}
+        {% if cart_items|length > 0 %}
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="cart-items">
+                    {% for item in cart_items %}
+                    <div class="cart-item" data-product-id="{{ item.product.id }}">
+                        <div class="cart-item-image">
+                            {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid">
+                            {% else %}
+                                <img src="{% static 'images/no-image.jpg' %}" alt="No image" class="img-fluid">
+                            {% endif %}
+                        </div>
+                        <div class="cart-item-info">
+                            <h3 class="cart-item-title">
+                                <a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a>
+                            </h3>
+                            <div class="cart-item-price">
+                                {{ item.product.price }} UZS
+                            </div>
+                        </div>
+                        <div class="cart-item-quantity">
+                            <div class="quantity-input">
+                                <button type="button" class="quantity-btn minus-btn">-</button>
+                                <input type="number" class="quantity-value" value="{{ item.quantity }}" min="1" max="99">
+                                <button type="button" class="quantity-btn plus-btn">+</button>
+                            </div>
+                        </div>
+                        <div class="cart-item-total">
+                            {{ item.total_price }} UZS
+                        </div>
+                        <button class="cart-item-remove" data-product-id="{{ item.product.id }}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart-summary">
+                    <h3>{{ translations.cart.summary.title }}</h3>
+                    <div class="cart-summary-item">
+                        <span>{{ translations.cart.summary.subtotal }}</span>
+                        <span class="cart-total">{{ cart_items.get_total_price }} UZS</span>
+                    </div>
+                    <div class="cart-summary-item">
+                        <span>{{ translations.cart.summary.delivery }}</span>
+                        <span>{{ translations.cart.summary.free }}</span>
+                    </div>
+                    <div class="cart-summary-total">
+                        <span>{{ translations.cart.summary.total }}</span>
+                        <span class="cart-total">{{ cart_items.get_total_price }} UZS</span>
+                    </div>
+                    <a href="{% url 'catalog:checkout' %}" class="btn btn-primary btn-block">
+                        {{ translations.cart.summary.checkout }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <h2>{{ translations.cart.empty.title }}</h2>
+            <p>{{ translations.cart.empty.description }}</p>
+            <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">
+                {{ translations.cart.empty.button }}
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="cart-total p-4 bg-light rounded shadow-sm">
+            <h4 class="mb-3">Итого к оплате</h4>
+            <div class="d-flex justify-content-between mb-3">
+                <span class="text-muted">Стоимость товаров:</span>
+                <span class="fw-bold">{{ cart_items.get_total_price }} UZS</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-4">
+                <strong>Итого к оплате:</strong>
+                <strong class="fs-5">{{ cart_items.get_total_price }} UZS</strong>
+            </div>
+            <div class="d-grid gap-2">
+                <a href="{% url 'catalog:checkout' %}" class="btn btn-primary animated-link btn-animated">
+                    Оформить заказ
+                </a>
+                <a href="{% url 'catalog:product_list' %}" class="btn btn-outline-secondary animated-link btn-animated">
+                    Продолжить покупки
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработка кнопок +/- для количества
+    document.querySelectorAll('.cart-item').forEach(item => {
+        const minusBtn = item.querySelector('.minus-btn');
+        const plusBtn = item.querySelector('.plus-btn');
+        const quantityInput = item.querySelector('.quantity-value');
+        const productId = item.dataset.productId;
+
+        if (minusBtn && plusBtn && quantityInput) {
+            minusBtn.addEventListener('click', () => updateQuantity(productId, -1));
+            plusBtn.addEventListener('click', () => updateQuantity(productId, 1));
+            quantityInput.addEventListener('change', () => {
+                updateCartItem(productId, parseInt(quantityInput.value));
+            });
+        }
+    });
+
+    // Обработка кнопок удаления
+    document.querySelectorAll('.cart-item-remove').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.dataset.productId;
+            removeFromCart(productId);
+        });
+    });
+
+    // Функция обновления количества
+    function updateQuantity(productId, change) {
+        const item = document.querySelector(`.cart-item[data-product-id="${productId}"]`);
+        const input = item.querySelector('.quantity-value');
+        const currentValue = parseInt(input.value);
+        const newValue = currentValue + change;
+        
+        if (newValue >= 1 && newValue <= 99) {
+            input.value = newValue;
+            updateCartItem(productId, newValue);
+        }
+    }
+
+    // Функция обновления товара в корзине
+    function updateCartItem(productId, quantity) {
+        fetch('{% url "catalog:cart_update" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({
+                product_id: productId,
+                quantity: quantity
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Обновляем отображение корзины
+                updateCartDisplay(data);
+                
+                // Показываем уведомление
+                Toastify({
+                    text: "Корзина обновлена",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    style: {
+                        background: "linear-gradient(to right, var(--primary-color), var(--secondary-color))"
+                    }
+                }).showToast();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ошибка',
+                    text: data.error || 'Произошла ошибка при обновлении корзины'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Ошибка',
+                text: 'Произошла ошибка при обновлении корзины'
+            });
+        });
+    }
+
+    // Функция удаления товара из корзины
+    function removeFromCart(productId) {
+        Swal.fire({
+            title: 'Удалить товар?',
+            text: "Вы уверены, что хотите удалить этот товар из корзины?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'var(--primary-color)',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Да, удалить',
+            cancelButtonText: 'Отмена'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('{% url "catalog:cart_remove" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({
+                        product_id: productId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Удаляем элемент из DOM
+                        const item = document.querySelector(`.cart-item[data-product-id="${productId}"]`);
+                        if (item) {
+                            item.remove();
+                        }
+                        
+                        // Обновляем отображение корзины
+                        updateCartDisplay(data);
+                        
+                        // Показываем уведомление
+                        Toastify({
+                            text: data.message || "Товар удален из корзины",
+                            duration: 3000,
+                            gravity: "top",
+                            position: "right",
+                            style: {
+                                background: "linear-gradient(to right, var(--primary-color), var(--secondary-color))"
+                            }
+                        }).showToast();
+                        
+                        // Если корзина пуста, перезагружаем страницу
+                        if (data.cart_count === 0) {
+                            location.reload();
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Ошибка',
+                            text: data.error || 'Произошла ошибка при удалении товара'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ошибка',
+                        text: 'Произошла ошибка при удалении товара'
+                    });
+                });
+            }
+        });
+    }
+
+    // Функция обновления отображения корзины
+    function updateCartDisplay(data) {
+        // Обновляем количество товаров в шапке
+        const cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) {
+            cartCountElement.textContent = data.cart_count;
+        }
+        
+        // Обновляем общую стоимость
+        const cartTotalElements = document.querySelectorAll('.cart-total');
+        cartTotalElements.forEach(element => {
+            element.textContent = `${data.cart_total} UZS`;
+        });
+    }
+});
+</script>
+
+<style>
+.cart-header {
+    background: var(--light-bg);
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+.cart-content {
+    padding: 2rem 0;
+}
+
+.cart-items {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow-sm);
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item-image {
+    width: 100px;
+}
+
+.cart-item-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-sm);
+    object-fit: cover;
+}
+
+.cart-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.cart-item-title {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.cart-item-title a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.cart-item-price {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+}
+
+.quantity-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.quantity-btn:hover {
+    background-color: var(--light-bg);
+}
+
+.quantity-value {
+    width: 50px;
+    text-align: center;
+    border: none;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    padding: 0.5rem;
+}
+
+.cart-item-total {
+    font-weight: 500;
+    color: var(--primary-color);
+    white-space: nowrap;
+}
+
+.cart-item-remove {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.cart-item-remove:hover {
+    color: var(--danger-color);
+}
+
+.cart-summary {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow-sm);
+}
+
+.cart-summary h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+}
+
+.cart-summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+}
+
+.cart-summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.empty-cart i {
+    font-size: 4rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.empty-cart h2 {
+    margin-bottom: 1rem;
+}
+
+.empty-cart p {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+</style>
+{% endblock %}

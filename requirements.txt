@@ -1,0 +1,13 @@
+Django<5.0,>=4.2
+mysqlclient==2.2.1
+python-dotenv==1.0.0
+Pillow>=9.5.0
+django-crispy-forms>=2.0
+crispy-bootstrap5>=0.7
+python-telegram-bot>=20.3
+django-modeltranslation>=0.18.11
+django-rosetta>=0.9.9
+django-compressor>=4.3.1
+django-sass-processor>=1.2.2
+libsass>=0.22.0
+django-ckeditor>=6.7.0
